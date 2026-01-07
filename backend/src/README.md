@@ -32,32 +32,50 @@ GET https://localhost:5001/api/loans
 
 ## Testing Strategy
 
-### Integration Tests
+**Test Summary**: 43 tests (22 integration + 21 unit)
+
+### Integration Tests (22 tests)
 **Framework**: xUnit with `WebApplicationFactory<Program>`  
 **Database**: TestContainers with SQL Server 2022  
 **Location**: `Fundo.Services.Tests/Integration/`
 
-**Coverage (22 tests)**:
+**Coverage**:
 - GET /api/loans - 5 tests (list, empty, sorting, content-type)
 - GET /api/loans/{id} - 3 tests (success, not found, invalid format)
 - POST /api/loans - 7 tests (success, validation scenarios)
 - POST /api/loans/{id}/payment - 7 tests (payments, validation, lifecycle)
 
-**Key Patterns Applied**:
+**Key Patterns**:
 - `IClassFixture<CustomWebApplicationFactory>` for shared test context
-- `AllowAutoRedirect = false` to test actual status codes
+- Real SQL Server in Docker for production parity
 - Descriptive test names: `MethodName_Scenario_ExpectedResult`
 - Test both success and failure paths
-- Validate status codes, headers, and response bodies
-- Real SQL Server for production parity
 
-**Running Specific Tests**:
+### Unit Tests (21 tests)
+**Framework**: xUnit with Moq for mocking  
+**Focus**: Core business logic with zero external dependencies
+
+#### Domain Tests (9 tests)
+**Location**: `Fundo.Services.Tests/Unit/Domain/LoanTests.cs`
+
+Tests `Loan` entity business logic:
+- `IsValid()` - 5 tests for balance validation rules
+- `UpdateStatus()` - 4 tests for status transitions and timestamp updates
+
+#### Application Tests (12 tests)
+**Location**: `Fundo.Services.Tests/Unit/Application/LoanServiceTests.cs`
+
+Tests `LoanService` with mocked `ILoanRepository`:
+- `CreateLoanAsync` - 2 tests
+- `GetLoanByIdAsync` - 2 tests
+- `GetAllLoansAsync` - 2 tests
+- `ProcessPaymentAsync` - 6 tests (payment processing, validation, status updates)
+
+**Running Tests**:
 ```powershell
-# Run only integration tests
-dotnet test --filter FullyQualifiedName~LoanManagementControllerTests
-
-# Run specific test
-dotnet test --filter GetAllLoans_ReturnsOkStatusCode
+dotnet test                                          # All 43 tests
+dotnet test --filter FullyQualifiedName~Unit        # 21 unit tests only
+dotnet test --filter FullyQualifiedName~Integration # 22 integration tests
 ```
 
 ---
