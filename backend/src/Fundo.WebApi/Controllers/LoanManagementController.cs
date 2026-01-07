@@ -9,11 +9,11 @@ namespace Fundo.WebApi.Controllers
     [Route("api/loans")]
     [Consumes(MediaTypeNames.Application.Json)]
     [Produces(MediaTypeNames.Application.Json)]
-    public class LoansController : ControllerBase
+    public class LoanManagementController : ControllerBase
     {
         private readonly ILoanService _loanService;
 
-        public LoansController(ILoanService loanService)
+        public LoanManagementController(ILoanService loanService)
         {
             _loanService = loanService;
         }

@@ -5,7 +5,7 @@
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <DefaultItemExcludes>$(DefaultItemExcludes);**/BuildHost-*/**</DefaultItemExcludes>
+    <DefaultItemExcludes>$(DefaultItemExcludes);**/BuildHost-*/**;Fundo.Infrastructure/**</DefaultItemExcludes>
   </PropertyGroup>
 
   <ItemGroup>
