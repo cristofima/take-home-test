@@ -21,11 +21,11 @@ cd Fundo.WebApi
 dotnet run
 ```
 
-API runs at: `https://localhost:5001` and `http://localhost:5000`
+API runs at: `https://localhost:56807` and `http://localhost:56808`
 
 Test the API:
 ```http
-GET https://localhost:5001/api/loans
+GET https://localhost:56807/api/loans
 ```
 
 ---
