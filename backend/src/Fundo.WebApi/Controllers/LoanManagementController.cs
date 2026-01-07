@@ -3,7 +3,7 @@ using System.Net.Mime;
 using Fundo.Application.Interfaces;
 using Fundo.Application.DTO;
 
-namespace Fundo.Applications.WebApi.Controllers
+namespace Fundo.WebApi.Controllers
 {
     [ApiController]
     [Route("api/loans")]

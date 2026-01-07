@@ -12,7 +12,7 @@ dotnet test
 
 To start the main API:  
 ```sh
-cd Fundo.Applications.WebApi  
+cd Fundo.WebApi  
 dotnet run
 ```
 

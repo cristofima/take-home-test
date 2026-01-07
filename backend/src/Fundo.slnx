@@ -1,6 +1,6 @@
 <Solution>
   <Project Path="Fundo.Application/Fundo.Application.csproj" />
-  <Project Path="Fundo.Applications.WebApi/Fundo.Applications.WebApi.csproj" />
+  <Project Path="Fundo.WebApi/Fundo.WebApi.csproj" />
   <Project Path="Fundo.Domain/Fundo.Domain.csproj" />
   <Project Path="Fundo.Infrastructure/Fundo.Infrastructure.csproj" />
 </Solution>

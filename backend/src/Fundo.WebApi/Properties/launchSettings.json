@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "Fundo.Applications.WebApi": {
+    "Fundo.WebApi": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
