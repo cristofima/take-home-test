@@ -4,12 +4,16 @@ on:
   push:
     branches: [main]
     paths:
-      - 'backend/**'
+      - 'backend/src/**/*.cs'
+      - 'backend/src/**/*.csproj'
+      - 'backend/src/**/*.slnx'
       - '.github/workflows/backend.yml'
   pull_request:
     branches: [main]
     paths:
-      - 'backend/**'
+      - 'backend/src/**/*.cs'
+      - 'backend/src/**/*.csproj'
+      - 'backend/src/**/*.slnx'
       - '.github/workflows/backend.yml'
   workflow_dispatch: # Allow manual trigger
 
