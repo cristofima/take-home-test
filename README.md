@@ -126,7 +126,7 @@ All endpoints are prefixed with `/api/loans`:
 
 ## Docker Setup ✅ (Recommended)
 
-Run the entire stack without installing .NET SDK or Node.js:
+Run the entire stack without installing .NET SDK or Node.js (from project root):
 
 ```bash
 docker-compose up --build
@@ -142,6 +142,33 @@ See [DOCKER.md](DOCKER.md) for details.
 - SQL Server 2019: 1.49GB
 - Backend (.NET 10): ~450MB
 - Frontend (nginx): ~50MB
+
+---
+
+## CI/CD with GitHub Actions ✅
+
+Automated build and test pipeline configured in [.github/workflows/backend.yml](.github/workflows/backend.yml):
+
+**Triggers:**
+- Push to `main` branch
+- Pull requests targeting that branch
+- Manual workflow dispatch
+
+**Pipeline Steps:**
+1. Checkout repository
+2. Setup .NET 10 SDK
+3. Restore dependencies
+4. Build solution in Release mode
+5. Run Unit Tests (21 tests using Moq)
+6. Run Integration Tests (22 tests using TestContainers with SQL Server)
+7. Upload test results as artifacts
+8. Publish test results report
+
+**Key Features:**
+- `ubuntu-latest` runner has Docker pre-installed for TestContainers
+- Separate test runs for unit and integration tests
+- TRX test result logging with artifact retention
+- Test result reporting with `dorny/test-reporter`
 
 ---
 
@@ -369,7 +396,7 @@ Given more time, the following enhancements would be valuable:
 - ~~**Docker**~~: ✅ Complete - docker-compose.yml with SQL Server 2019, auto-migrations
 - ~~**Unit Tests**~~: ✅ Complete - 21 unit tests for domain and service layers
 - ~~**Integration Tests**~~: ✅ Complete - 22 integration tests with TestContainers
-- **GitHub Actions**: CI/CD pipeline for automated builds and tests (pending)
+- ~~**GitHub Actions**~~: ✅ Complete - CI/CD pipeline with build and test automation
 - **Authentication**: JWT-based authentication with role-based authorization
 - **Logging**: Structured logging with Serilog
 - **Validation**: Enhanced DTO validation with FluentValidation

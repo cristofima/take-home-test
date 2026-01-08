@@ -72,9 +72,9 @@ LoansComponent
 ```
 
 ### Environment Configuration
-- `environment.ts` - Production config
-- `environment.development.ts` - Development config
-- API URL: `https://localhost:56807/api`
+- `environment.ts` - Production config (API: `http://localhost:56808/api`)
+- `environment.development.ts` - Development config (API: `http://localhost:56808/api`)
+- Uses HTTP to avoid SSL certificate issues in Docker
 
 ## Material Design
 Using Angular Material components:

@@ -1,6 +1,6 @@
 ## Running the Backend
 
-### Build
+### Build Locally
 ```powershell
 cd backend/src
 dotnet build
@@ -13,7 +13,7 @@ dotnet test --verbosity normal
 
 **Prerequisites for tests:**
 - Docker Desktop running (TestContainers requires Docker)
-- All 22 integration tests use real SQL Server containers
+- All 22 integration tests use real SQL Server 2022 containers for production parity
 
 ### Run API
 ```powershell
