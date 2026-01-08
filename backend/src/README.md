@@ -23,10 +23,14 @@ dotnet run
 
 API runs at: `https://localhost:56807` and `http://localhost:56808`
 
+**Swagger UI**: Available at `https://localhost:56807/swagger` or `http://localhost:56808/swagger`
+
 Test the API:
 ```http
 GET https://localhost:56807/api/loans
 ```
+
+**Logs**: Application logs are written to `logs/fundo-<date>.log` with rolling daily files
 
 ---
 
