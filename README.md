@@ -94,7 +94,9 @@ All endpoints are prefixed with `/api/loans`:
    cd Fundo.WebApi
    dotnet run
    ```
-   API runs at: `https://localhost:5001` and `http://localhost:5000`
+   API runs at: `https://localhost:56807` and `http://localhost:56808`
+
+   > **Note**: For local development, the frontend uses HTTP (`http://localhost:56808`) to avoid SSL certificate issues. If you prefer HTTPS, run: `dotnet dev-certs https --trust`
 
 5. **Run tests:**
    ```powershell
@@ -119,6 +121,27 @@ All endpoints are prefixed with `/api/loans`:
    npm start
    ```
    App runs at: `http://localhost:4200`
+
+---
+
+## Docker Setup ✅ (Recommended)
+
+Run the entire stack without installing .NET SDK or Node.js:
+
+```bash
+docker-compose up --build
+```
+
+- **Frontend**: http://localhost:4200
+- **Backend API**: http://localhost:56808/api/loans
+- **SQL Server 2019**: Automatic migrations on startup with 5 seeded loans
+
+See [DOCKER.md](DOCKER.md) for details.
+
+**Image Sizes:**
+- SQL Server 2019: 1.49GB
+- Backend (.NET 10): ~450MB
+- Frontend (nginx): ~50MB
 
 ---
 
@@ -343,11 +366,11 @@ GET    /api/loans/{id}  ← Get specific loan
 
 Given more time, the following enhancements would be valuable:
 
-- **Docker**: Create Dockerfile for backend and docker-compose.yml with SQL Server
-- **Unit Tests**: Comprehensive test coverage for `LoanService` business logic
-- **Integration Tests**: WebApplicationFactory-based tests for all endpoints
+- ~~**Docker**~~: ✅ Complete - docker-compose.yml with SQL Server 2019, auto-migrations
+- ~~**Unit Tests**~~: ✅ Complete - 21 unit tests for domain and service layers
+- ~~**Integration Tests**~~: ✅ Complete - 22 integration tests with TestContainers
+- **GitHub Actions**: CI/CD pipeline for automated builds and tests (pending)
 - **Authentication**: JWT-based authentication with role-based authorization
-- **GitHub Actions**: CI/CD pipeline for automated builds and tests
 - **Logging**: Structured logging with Serilog
 - **Validation**: Enhanced DTO validation with FluentValidation
 - **Error Handling**: Global exception handling middleware
@@ -360,4 +383,4 @@ Given more time, the following enhancements would be valuable:
 - **Architecture**: Clean Architecture strictly enforced - Domain has zero dependencies, only Infrastructure references EF Core
 - **API Routes**: Controllers use plural routes (`/api/loans`), not singular
 - **Database**: Migrations managed from Infrastructure project, connection string in WebApi's `appsettings.json`
-- **Testing**: Integration test project references all layers; uses in-memory database for isolation
+- **Testing**: Integration test project references all layers; uses TestContainers for isolation
