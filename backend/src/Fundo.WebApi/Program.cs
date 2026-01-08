@@ -1,5 +1,7 @@
 ﻿using Fundo.Application;
 using Fundo.Infrastructure;
+using Fundo.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 var policyName = "AllowFrontend";
@@ -10,11 +12,14 @@ builder.Services
     .AddInfrastructureServices(builder.Configuration);
 
 // Add CORS for frontend integration
+var allowedOrigins = builder.Configuration.GetValue<string>("CorsOrigins") 
+    ?? "http://localhost:4200";
+    
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(policyName, policy =>
     {
-        policy.WithOrigins("http://localhost:4200")
+        policy.WithOrigins(allowedOrigins.Split(';'))
               .AllowAnyMethod()
               .AllowAnyHeader()
               .AllowCredentials();
@@ -28,6 +33,13 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
+
+    // Apply migrations on startup (for Docker)
+    using (var scope = app.Services.CreateScope())
+    {
+        var dbContext = scope.ServiceProvider.GetRequiredService<LoanDbContext>();
+        await dbContext.Database.MigrateAsync();
+    }
 }
 
 app.UseRouting();
