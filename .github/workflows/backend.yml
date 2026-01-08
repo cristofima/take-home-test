@@ -1,0 +1,83 @@
+name: Backend CI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'backend/**'
+      - '.github/workflows/backend.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'backend/**'
+      - '.github/workflows/backend.yml'
+  workflow_dispatch: # Allow manual trigger
+
+env:
+  DOTNET_VERSION: '10.0.x'
+  DOTNET_NOLOGO: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+
+jobs:
+  build-and-test:
+    name: Build and Test
+    runs-on: ubuntu-latest # Has Docker pre-installed for TestContainers
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Display .NET version
+        run: dotnet --version
+
+      - name: Restore dependencies
+        run: dotnet restore backend/src/Fundo.slnx
+
+      - name: Build solution
+        run: dotnet build backend/src/Fundo.slnx --configuration Release --no-restore
+
+      - name: Run Unit Tests
+        run: |
+          dotnet test backend/src/Fundo.Services.Tests/Fundo.Services.Tests.csproj \
+            --configuration Release \
+            --no-build \
+            --filter "FullyQualifiedName~Unit" \
+            --verbosity normal \
+            --logger "trx;LogFileName=unit-test-results.trx" \
+            --results-directory ./TestResults
+
+      - name: Run Integration Tests
+        run: |
+          dotnet test backend/src/Fundo.Services.Tests/Fundo.Services.Tests.csproj \
+            --configuration Release \
+            --no-build \
+            --filter "FullyQualifiedName~Integration" \
+            --verbosity normal \
+            --logger "trx;LogFileName=integration-test-results.trx" \
+            --results-directory ./TestResults
+        env:
+          # TestContainers configuration (ubuntu-latest has Docker)
+          TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE: /var/run/docker.sock
+          DOCKER_HOST: unix:///var/run/docker.sock
+
+      - name: Upload Test Results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-results
+          path: ./TestResults/**/*.trx
+          retention-days: 30
+
+      - name: Publish Test Results
+        uses: dorny/test-reporter@v1
+        if: always()
+        with:
+          name: Test Results
+          path: ./TestResults/**/*.trx
+          reporter: dotnet-trx
+          fail-on-error: true
