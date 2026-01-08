@@ -36,6 +36,9 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>, IAsyn
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
+        // Set environment to "Test" to disable automatic migrations in Program.cs
+        builder.UseEnvironment("Test");
+        
         builder.ConfigureTestServices(services =>
         {
             // Remove SQL Server DbContext registration from production

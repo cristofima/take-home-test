@@ -6,6 +6,7 @@ using Fundo.Application.DTO;
 using Fundo.Application.Interfaces;
 using Fundo.Application.Services;
 using Fundo.Domain.Entities;
+using Microsoft.Extensions.Logging;
 using Moq;
 using Xunit;
 
@@ -17,12 +18,14 @@ namespace Fundo.Services.Tests.Unit.Application;
 public class LoanServiceTests
 {
     private readonly Mock<ILoanRepository> _repositoryMock;
+    private readonly Mock<ILogger<LoanService>> _loggerMock;
     private readonly LoanService _service;
 
     public LoanServiceTests()
     {
         _repositoryMock = new Mock<ILoanRepository>();
-        _service = new LoanService(_repositoryMock.Object);
+        _loggerMock = new Mock<ILogger<LoanService>>();
+        _service = new LoanService(_repositoryMock.Object, _loggerMock.Object);
     }
 
     #region CreateLoanAsync Tests
