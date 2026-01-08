@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.angular/
+.editorconfig
+.gitignore
+*.md
+.vscode/
+.git/

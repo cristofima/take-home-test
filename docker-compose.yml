@@ -1,0 +1,67 @@
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: fundo-sqlserver
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "YourStrong@Password123"
+      MSSQL_PID: "Developer"
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+    networks:
+      - fundo-network
+    restart: unless-stopped
+    healthcheck:
+      test: [
+        "CMD-SHELL",
+        "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P YourStrong@Password123 -Q 'SELECT 1' || exit 1"
+      ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 60s
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: fundo-backend
+    ports:
+      - "56808:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Development"
+      ConnectionStrings__DefaultConnection: "Server=sqlserver;Database=FundoLoanDb;User Id=sa;Password=YourStrong@Password123;TrustServerCertificate=True;"
+      CorsOrigins: "http://localhost:4200"
+    networks:
+      - fundo-network
+    restart: unless-stopped
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        API_URL: "http://localhost:56808/api"
+    container_name: fundo-frontend
+    ports:
+      - "4200:80"
+    networks:
+      - fundo-network
+    restart: unless-stopped
+    depends_on:
+      backend:
+        condition: service_started
+
+volumes:
+  sqlserver_data:
+    name: fundo-sqlserver-data
+
+networks:
+  fundo-network:
+    name: fundo-network
+    driver: bridge
