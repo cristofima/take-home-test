@@ -27,16 +27,6 @@ public class LoanRepository : ILoanRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task DeleteAsync(Guid id)
-    {
-        var loan = await _context.Loans.FindAsync(id);
-        if (loan is not null)
-        {
-            _context.Loans.Remove(loan);
-            await _context.SaveChangesAsync();
-        }
-    }
-
     public async Task<IEnumerable<Loan>> GetAllAsync()
     {
         return await _context.Loans
