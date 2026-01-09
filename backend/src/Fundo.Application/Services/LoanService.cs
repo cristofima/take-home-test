@@ -1,5 +1,6 @@
 using Fundo.Application.DTO;
 using Fundo.Application.Interfaces;
+using Fundo.Application.Utils;
 using Fundo.Domain.Entities;
 using Microsoft.Extensions.Logging;
 
@@ -43,7 +44,7 @@ public class LoanService : ILoanService
         _logger.LogInformation("Loan created successfully with ID {LoanId} for applicant {ApplicantName}", 
             createdLoan.Id, createdLoan.ApplicantName);
         
-        return MapToResponse(createdLoan);
+        return LoanUtils.MapToResponse(createdLoan);
     }
 
     public async Task<LoanResponse?> GetLoanByIdAsync(Guid id)
@@ -58,7 +59,7 @@ public class LoanService : ILoanService
             return null;
         }
         
-        return MapToResponse(loan);
+        return LoanUtils.MapToResponse(loan);
     }
 
     public async Task<IEnumerable<LoanResponse>> GetAllLoansAsync()
@@ -66,11 +67,11 @@ public class LoanService : ILoanService
         _logger.LogDebug("Retrieving all loans");
         
         var loans = await _loanRepository.GetAllAsync();
-        var loansList = loans.ToList();
+        var loanResponses = loans.Select(LoanUtils.MapToResponse).ToList();
         
-        _logger.LogInformation("Retrieved {LoanCount} loans", loansList.Count);
+        _logger.LogInformation("Retrieved {LoanCount} loans", loanResponses.Count);
         
-        return loansList.Select(MapToResponse);
+        return loanResponses;
     }
 
     public async Task<LoanResponse> ProcessPaymentAsync(Guid id, PaymentRequest request)
@@ -123,18 +124,6 @@ public class LoanService : ILoanService
             "Payment processed successfully for loan {LoanId}. Balance: {PreviousBalance:C} -> {NewBalance:C}, Status: {PreviousStatus} -> {NewStatus}",
             id, previousBalance, loan.CurrentBalance, previousStatus, loan.Status);
         
-        return MapToResponse(loan);
-    }
-
-    private static LoanResponse MapToResponse(Loan loan)
-    {
-        return new LoanResponse
-        {
-            Id = loan.Id,
-            Amount = loan.Amount,
-            CurrentBalance = loan.CurrentBalance,
-            ApplicantName = loan.ApplicantName,
-            Status = loan.Status,
-        };
+        return LoanUtils.MapToResponse(loan);
     }
 }
