@@ -1,4 +1,5 @@
 using System;
+using Fundo.Domain.Constants;
 using Fundo.Domain.Entities;
 using Xunit;
 
@@ -102,7 +103,7 @@ public class LoanTests
         {
             Amount = 10000m,
             CurrentBalance = 0m,
-            Status = "active",
+            Status = LoanStatus.Active,
             UpdatedAt = DateTimeOffset.UtcNow.AddDays(-1)
         };
         var beforeUpdate = loan.UpdatedAt;
@@ -111,7 +112,7 @@ public class LoanTests
         loan.UpdateStatus();
 
         // Assert
-        Assert.Equal("paid", loan.Status);
+        Assert.Equal(LoanStatus.Paid, loan.Status);
         Assert.True(loan.UpdatedAt > beforeUpdate);
     }
 
@@ -123,14 +124,14 @@ public class LoanTests
         {
             Amount = 10000m,
             CurrentBalance = -100m,
-            Status = "active"
+            Status = LoanStatus.Active
         };
 
         // Act
         loan.UpdateStatus();
 
         // Assert
-        Assert.Equal("paid", loan.Status);
+        Assert.Equal(LoanStatus.Paid, loan.Status);
     }
 
     [Fact]
@@ -141,14 +142,14 @@ public class LoanTests
         {
             Amount = 10000m,
             CurrentBalance = 5000m,
-            Status = "active"
+            Status = LoanStatus.Active
         };
 
         // Act
         loan.UpdateStatus();
 
         // Assert
-        Assert.Equal("active", loan.Status);
+        Assert.Equal(LoanStatus.Active, loan.Status);
     }
 
     [Fact]
@@ -159,7 +160,7 @@ public class LoanTests
         {
             Amount = 10000m,
             CurrentBalance = 5000m,
-            Status = "active",
+            Status = LoanStatus.Active,
             UpdatedAt = DateTimeOffset.UtcNow.AddDays(-1)
         };
         var beforeUpdate = loan.UpdatedAt;

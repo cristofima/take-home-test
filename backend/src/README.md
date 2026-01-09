@@ -137,5 +137,6 @@ Fundo.Infrastructure (EF Core, Repositories)
 **Important Patterns**:
 - Services in Application layer, NOT Infrastructure
 - Business logic in Domain entities (`Loan.IsValid()`, `Loan.UpdateStatus()`)
+- Type-safe constants for status values (`LoanStatus.Active`, `LoanStatus.Paid`)
 - Repository interfaces in Application, implementations in Infrastructure
 - DTOs for API contracts, separate from Domain entities

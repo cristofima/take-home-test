@@ -180,6 +180,7 @@ Automated build and test pipeline configured in [.github/workflows/backend.yml](
 - EF Core integration with SQL Server and migrations
 - Database seeded with 5 sample loans
 - Domain-Driven Design with `Loan.IsValid()` and `Loan.UpdateStatus()` methods
+- **Type-safe constants**: `LoanStatus.Active` and `LoanStatus.Paid` eliminate magic strings
 - Proper Dependency Injection in both Application and Infrastructure layers
 - CORS configured for Angular frontend
 - Project upgraded to latest .NET 10 with SLNX solution format
@@ -403,6 +404,7 @@ GET    /api/loans/{id}  ← Get specific loan
 
 Potential improvements for production readiness:
 
+- **Pagination**: Implement page-based or cursor-based pagination for `/api/loans` endpoint to handle large datasets efficiently
 - **E2E Frontend Tests**: Implement end-to-end testing using Playwright for automated UI testing
 - **Authentication & Authorization**: JWT tokens, role-based access control, Azure AD integration
 - **Rate Limiting**: Protect API endpoints from abuse

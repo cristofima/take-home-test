@@ -1,3 +1,5 @@
+using Fundo.Domain.Constants;
+
 namespace Fundo.Domain.Entities;
 
 public class Loan
@@ -31,7 +33,7 @@ public class Loan
     {
         if (CurrentBalance <= 0)
         {
-            Status = "paid";
+            Status = LoanStatus.Paid;
         }
         UpdatedAt = DateTimeOffset.UtcNow;
     }

@@ -1,6 +1,7 @@
 using Fundo.Application.DTO;
 using Fundo.Application.Interfaces;
 using Fundo.Application.Utils;
+using Fundo.Domain.Constants;
 using Fundo.Domain.Entities;
 using Microsoft.Extensions.Logging;
 
@@ -27,7 +28,7 @@ public class LoanService : ILoanService
             Amount = request.Amount,
             CurrentBalance = request.Amount, // New loan starts with full balance
             ApplicantName = request.ApplicantName,
-            Status = "active",
+            Status = LoanStatus.Active,
             CreatedAt = DateTimeOffset.UtcNow,
             UpdatedAt = DateTimeOffset.UtcNow
         };

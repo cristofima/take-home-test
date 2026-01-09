@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Fundo.Application.DTO;
 using Fundo.Application.Interfaces;
 using Fundo.Application.Services;
+using Fundo.Domain.Constants;
 using Fundo.Domain.Entities;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -183,7 +184,7 @@ public class LoanServiceTests
             Amount = 10000m,
             CurrentBalance = 10000m,
             ApplicantName = "John Doe",
-            Status = "active"
+            Status = LoanStatus.Active
         };
 
         var paymentRequest = new PaymentRequest { Amount = 3000m };
@@ -201,7 +202,7 @@ public class LoanServiceTests
 
         // Assert
         Assert.Equal(7000m, result.CurrentBalance);
-        Assert.Equal("active", result.Status);
+        Assert.Equal(LoanStatus.Active, result.Status);
         _repositoryMock.Verify(r => r.UpdateAsync(It.IsAny<Loan>()), Times.Once);
     }
 
@@ -216,7 +217,7 @@ public class LoanServiceTests
             Amount = 10000m,
             CurrentBalance = 5000m,
             ApplicantName = "John Doe",
-            Status = "active"
+            Status = LoanStatus.Active
         };
 
         var paymentRequest = new PaymentRequest { Amount = 5000m };
@@ -234,7 +235,7 @@ public class LoanServiceTests
 
         // Assert
         Assert.Equal(0m, result.CurrentBalance);
-        Assert.Equal("paid", result.Status);
+        Assert.Equal(LoanStatus.Paid, result.Status);
     }
 
     [Fact]

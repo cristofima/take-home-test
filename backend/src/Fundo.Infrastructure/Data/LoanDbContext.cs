@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Fundo.Domain.Entities;
+using Fundo.Domain.Constants;
 
 namespace Fundo.Infrastructure.Data;
 
@@ -39,7 +40,7 @@ public class LoanDbContext : DbContext
             entity.Property(e => e.Status)
                 .HasMaxLength(15)
                 .IsRequired()
-                .HasDefaultValue("active");
+                .HasDefaultValue(LoanStatus.Active);
 
             entity.Property(e => e.CreatedAt)
                 .IsRequired()
@@ -71,7 +72,7 @@ public class LoanDbContext : DbContext
                 Amount = 25000.00m,
                 CurrentBalance = 18750.00m,
                 ApplicantName = "John Doe",
-                Status = "active",
+                Status = LoanStatus.Active,
                 CreatedAt = new DateTime(2025, 7, 1, 0, 0, 0, DateTimeKind.Utc),
                 UpdatedAt = new DateTime(2025, 12, 1, 0, 0, 0, DateTimeKind.Utc)
             },
@@ -81,7 +82,7 @@ public class LoanDbContext : DbContext
                 Amount = 15000.00m,
                 CurrentBalance = 0.00m,
                 ApplicantName = "Jane Smith",
-                Status = "paid",
+                Status = LoanStatus.Paid,
                 CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc),
                 UpdatedAt = new DateTime(2025, 11, 1, 0, 0, 0, DateTimeKind.Utc)
             },
@@ -91,7 +92,7 @@ public class LoanDbContext : DbContext
                 Amount = 50000.00m,
                 CurrentBalance = 32500.00m,
                 ApplicantName = "Robert Johnson",
-                Status = "active",
+                Status = LoanStatus.Active,
                 CreatedAt = new DateTime(2025, 5, 1, 0, 0, 0, DateTimeKind.Utc),
                 UpdatedAt = new DateTime(2025, 12, 17, 0, 0, 0, DateTimeKind.Utc)
             },
@@ -101,7 +102,7 @@ public class LoanDbContext : DbContext
                 Amount = 10000.00m,
                 CurrentBalance = 0.00m,
                 ApplicantName = "Emily Williams",
-                Status = "paid",
+                Status = LoanStatus.Paid,
                 CreatedAt = new DateTime(2024, 7, 1, 0, 0, 0, DateTimeKind.Utc),
                 UpdatedAt = new DateTime(2025, 9, 1, 0, 0, 0, DateTimeKind.Utc)
             },
@@ -111,7 +112,7 @@ public class LoanDbContext : DbContext
                 Amount = 75000.00m,
                 CurrentBalance = 72000.00m,
                 ApplicantName = "Michael Brown",
-                Status = "active",
+                Status = LoanStatus.Active,
                 CreatedAt = new DateTime(2025, 10, 1, 0, 0, 0, DateTimeKind.Utc),
                 UpdatedAt = new DateTime(2026, 1, 2, 0, 0, 0, DateTimeKind.Utc)
             }

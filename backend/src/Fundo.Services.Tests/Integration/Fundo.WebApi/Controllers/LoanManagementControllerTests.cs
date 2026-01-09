@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using Fundo.Application.DTO;
+using Fundo.Domain.Constants;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Xunit;
 
@@ -285,7 +286,7 @@ public class LoanManagementControllerTests : IClassFixture<CustomWebApplicationF
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         Assert.NotNull(updatedLoan);
         Assert.Equal(7000.00m, updatedLoan.CurrentBalance); // 10000 - 3000
-        Assert.Equal("active", updatedLoan.Status); // Still active since balance > 0
+        Assert.Equal(LoanStatus.Active, updatedLoan.Status); // Still active since balance > 0
     }
 
     [Fact]
@@ -315,7 +316,7 @@ public class LoanManagementControllerTests : IClassFixture<CustomWebApplicationF
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         Assert.NotNull(updatedLoan);
         Assert.Equal(0m, updatedLoan.CurrentBalance);
-        Assert.Equal("paid", updatedLoan.Status); // Status automatically updated by domain logic
+        Assert.Equal(LoanStatus.Paid, updatedLoan.Status); // Status automatically updated by domain logic
     }
 
     [Fact]
@@ -348,7 +349,7 @@ public class LoanManagementControllerTests : IClassFixture<CustomWebApplicationF
         Assert.Equal(HttpStatusCode.OK, finalResponse.StatusCode);
         Assert.NotNull(finalLoan);
         Assert.Equal(0m, finalLoan.CurrentBalance); // 10000 - 3000 - 2000 - 5000
-        Assert.Equal("paid", finalLoan.Status);
+        Assert.Equal(LoanStatus.Paid, finalLoan.Status);
     }
 
     [Fact]
