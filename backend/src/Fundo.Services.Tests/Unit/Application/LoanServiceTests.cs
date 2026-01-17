@@ -7,6 +7,7 @@ using Fundo.Application.Interfaces;
 using Fundo.Application.Services;
 using Fundo.Domain.Constants;
 using Fundo.Domain.Entities;
+using Fundo.Domain.Interfaces;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Xunit;

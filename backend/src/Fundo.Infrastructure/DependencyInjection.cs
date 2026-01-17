@@ -1,4 +1,5 @@
 ﻿using Fundo.Application.Interfaces;
+using Fundo.Domain.Interfaces;
 using Fundo.Infrastructure.Data;
 using Fundo.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;

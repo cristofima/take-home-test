@@ -3,6 +3,7 @@ using Fundo.Application.Interfaces;
 using Fundo.Application.Utils;
 using Fundo.Domain.Constants;
 using Fundo.Domain.Entities;
+using Fundo.Domain.Interfaces;
 using Microsoft.Extensions.Logging;
 
 namespace Fundo.Application.Services;

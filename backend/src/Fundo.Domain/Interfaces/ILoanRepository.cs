@@ -1,6 +1,6 @@
 ﻿using Fundo.Domain.Entities;
 
-namespace Fundo.Application.Interfaces;
+namespace Fundo.Domain.Interfaces;
 
 /// <summary>
 /// Repository interface for data access operations
