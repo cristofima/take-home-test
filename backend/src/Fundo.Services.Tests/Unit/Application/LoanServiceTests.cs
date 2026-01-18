@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Fundo.Application.DTO;
-using Fundo.Application.Interfaces;
 using Fundo.Application.Services;
 using Fundo.Domain.Constants;
 using Fundo.Domain.Entities;
@@ -88,14 +87,15 @@ public class LoanServiceTests
     {
         // Arrange
         var loanId = Guid.NewGuid();
-        var loan = new Loan
-        {
-            Id = loanId,
-            Amount = 10000m,
-            CurrentBalance = 5000m,
-            ApplicantName = "John Doe",
-            Status = "active"
-        };
+        var loan = new Loan(
+            id: loanId,
+            amount: 10000m,
+            currentBalance: 5000m,
+            applicantName: "John Doe",
+            status: LoanStatus.Active,
+            createdAt: DateTimeOffset.UtcNow,
+            updatedAt: DateTimeOffset.UtcNow
+        );
 
         _repositoryMock
             .Setup(r => r.GetByIdAsync(loanId))
@@ -137,9 +137,9 @@ public class LoanServiceTests
         // Arrange
         var loans = new List<Loan>
         {
-            new Loan { Id = Guid.NewGuid(), Amount = 10000m, ApplicantName = "John", Status = "active" },
-            new Loan { Id = Guid.NewGuid(), Amount = 15000m, ApplicantName = "Jane", Status = "paid" },
-            new Loan { Id = Guid.NewGuid(), Amount = 20000m, ApplicantName = "Bob", Status = "active" }
+            new(Guid.NewGuid(), 10000m, 10000m, "John", LoanStatus.Active, DateTimeOffset.UtcNow, DateTimeOffset.UtcNow),
+            new(Guid.NewGuid(), 15000m, 0m, "Jane", LoanStatus.Paid, DateTimeOffset.UtcNow, DateTimeOffset.UtcNow),
+            new(Guid.NewGuid(), 20000m, 15000m, "Bob", LoanStatus.Active, DateTimeOffset.UtcNow, DateTimeOffset.UtcNow)
         };
 
         _repositoryMock
@@ -179,14 +179,15 @@ public class LoanServiceTests
     {
         // Arrange
         var loanId = Guid.NewGuid();
-        var loan = new Loan
-        {
-            Id = loanId,
-            Amount = 10000m,
-            CurrentBalance = 10000m,
-            ApplicantName = "John Doe",
-            Status = LoanStatus.Active
-        };
+        var loan = new Loan(
+            id: loanId,
+            amount: 10000m,
+            currentBalance: 10000m,
+            applicantName: "John Doe",
+            status: LoanStatus.Active,
+            createdAt: DateTimeOffset.UtcNow,
+            updatedAt: DateTimeOffset.UtcNow
+        );
 
         var paymentRequest = new PaymentRequest { Amount = 3000m };
 
@@ -212,14 +213,15 @@ public class LoanServiceTests
     {
         // Arrange
         var loanId = Guid.NewGuid();
-        var loan = new Loan
-        {
-            Id = loanId,
-            Amount = 10000m,
-            CurrentBalance = 5000m,
-            ApplicantName = "John Doe",
-            Status = LoanStatus.Active
-        };
+        var loan = new Loan(
+            id: loanId,
+            amount: 10000m,
+            currentBalance: 5000m,
+            applicantName: "John Doe",
+            status: LoanStatus.Active,
+            createdAt: DateTimeOffset.UtcNow,
+            updatedAt: DateTimeOffset.UtcNow
+        );
 
         var paymentRequest = new PaymentRequest { Amount = 5000m };
 
@@ -260,12 +262,15 @@ public class LoanServiceTests
     {
         // Arrange
         var loanId = Guid.NewGuid();
-        var loan = new Loan
-        {
-            Id = loanId,
-            Amount = 10000m,
-            CurrentBalance = 5000m
-        };
+        var loan = new Loan(
+            id: loanId,
+            amount: 10000m,
+            currentBalance: 5000m,
+            applicantName: "John Doe",
+            status: LoanStatus.Active,
+            createdAt: DateTimeOffset.UtcNow,
+            updatedAt: DateTimeOffset.UtcNow
+        );
 
         var paymentRequest = new PaymentRequest { Amount = 0m };
 
@@ -283,12 +288,15 @@ public class LoanServiceTests
     {
         // Arrange
         var loanId = Guid.NewGuid();
-        var loan = new Loan
-        {
-            Id = loanId,
-            Amount = 10000m,
-            CurrentBalance = 5000m
-        };
+        var loan = new Loan(
+            id: loanId,
+            amount: 10000m,
+            currentBalance: 5000m,
+            applicantName: "John Doe",
+            status: LoanStatus.Active,
+            createdAt: DateTimeOffset.UtcNow,
+            updatedAt: DateTimeOffset.UtcNow
+        );
 
         var paymentRequest = new PaymentRequest { Amount = -100m };
 
@@ -306,12 +314,15 @@ public class LoanServiceTests
     {
         // Arrange
         var loanId = Guid.NewGuid();
-        var loan = new Loan
-        {
-            Id = loanId,
-            Amount = 10000m,
-            CurrentBalance = 3000m
-        };
+        var loan = new Loan(
+            id: loanId,
+            amount: 10000m,
+            currentBalance: 3000m,
+            applicantName: "John Doe",
+            status: LoanStatus.Active,
+            createdAt: DateTimeOffset.UtcNow,
+            updatedAt: DateTimeOffset.UtcNow
+        );
 
         var paymentRequest = new PaymentRequest { Amount = 5000m };
 

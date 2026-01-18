@@ -36,7 +36,7 @@ GET https://localhost:56807/api/loans
 
 ## Testing Strategy
 
-**Test Summary**: 43 tests (22 integration + 21 unit)
+**Test Summary**: 51 tests (22 integration + 29 unit)
 
 ### Integration Tests (22 tests)
 **Framework**: xUnit with `WebApplicationFactory<Program>`  
@@ -55,16 +55,17 @@ GET https://localhost:56807/api/loans
 - Descriptive test names: `MethodName_Scenario_ExpectedResult`
 - Test both success and failure paths
 
-### Unit Tests (21 tests)
+### Unit Tests (29 tests)
 **Framework**: xUnit with Moq for mocking  
 **Focus**: Core business logic with zero external dependencies
 
-#### Domain Tests (9 tests)
+#### Domain Tests (17 tests)
 **Location**: `Fundo.Services.Tests/Unit/Domain/LoanTests.cs`
 
 Tests `Loan` entity business logic:
+- `Loan.Create()` factory method - 6 tests for validation
 - `IsValid()` - 5 tests for balance validation rules
-- `UpdateStatus()` - 4 tests for status transitions and timestamp updates
+- `ApplyPayment()` - 6 tests for payment processing and validation
 
 #### Application Tests (12 tests)
 **Location**: `Fundo.Services.Tests/Unit/Application/LoanServiceTests.cs`
@@ -77,8 +78,8 @@ Tests `LoanService` with mocked `ILoanRepository`:
 
 **Running Tests**:
 ```powershell
-dotnet test                                          # All 43 tests
-dotnet test --filter FullyQualifiedName~Unit        # 21 unit tests only
+dotnet test                                          # All 51 tests
+dotnet test --filter FullyQualifiedName~Unit        # 29 unit tests only
 dotnet test --filter FullyQualifiedName~Integration # 22 integration tests
 ```
 
@@ -136,7 +137,7 @@ Fundo.Infrastructure (EF Core, Repositories)
 
 **Important Patterns**:
 - Services in Application layer, NOT Infrastructure
-- Business logic in Domain entities (`Loan.IsValid()`, `Loan.UpdateStatus()`)
+- Business logic in Domain entities with encapsulation (`Loan.Create()`, `Loan.ApplyPayment()`)
 - Type-safe constants for status values (`LoanStatus.Active`, `LoanStatus.Paid`)
 - Repository interfaces in Application, implementations in Infrastructure
 - DTOs for API contracts, separate from Domain entities

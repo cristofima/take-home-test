@@ -159,7 +159,7 @@ Automated build and test pipeline configured in [.github/workflows/backend.yml](
 2. Setup .NET 10 SDK
 3. Restore dependencies
 4. Build solution in Release mode
-5. Run Unit Tests (21 tests using Moq)
+5. Run Unit Tests (29 tests using Moq)
 6. Run Integration Tests (22 tests using TestContainers with SQL Server)
 7. Upload test results as artifacts
 8. Publish test results report
@@ -179,7 +179,7 @@ Automated build and test pipeline configured in [.github/workflows/backend.yml](
 - Service layer with business logic in Application layer (not Infrastructure)
 - EF Core integration with SQL Server and migrations
 - Database seeded with 5 sample loans
-- Domain-Driven Design with `Loan.IsValid()` and `Loan.UpdateStatus()` methods
+- Domain-Driven Design with encapsulated entities, factory methods, and domain methods (`Loan.Create()`, `Loan.ApplyPayment()`)
 - **Type-safe constants**: `LoanStatus.Active` and `LoanStatus.Paid` eliminate magic strings
 - Proper Dependency Injection in both Application and Infrastructure layers
 - CORS configured for Angular frontend
@@ -189,7 +189,7 @@ Automated build and test pipeline configured in [.github/workflows/backend.yml](
 
 ### ✅ DevOps & Testing
 - **Docker**: docker-compose.yml with SQL Server 2019, backend, and frontend containers
-- **Unit Tests**: 21 tests for domain entities and application services (Moq)
+- **Unit Tests**: 29 tests for domain entities and application services (Moq)
 - **Integration Tests**: 22 tests with TestContainers (real SQL Server 2022)
 - **GitHub Actions**: CI/CD pipeline triggered on C# file changes
 
@@ -328,10 +328,12 @@ public class Loan
 {
     public bool IsValid() => CurrentBalance <= Amount && CurrentBalance >= 0;
     
-    public void UpdateStatus()
+    public void ApplyPayment(decimal amount)
     {
-        if (CurrentBalance <= 0) Status = "paid";
-        UpdatedAt = DateTimeOffset.UtcNow;
+        if (amount > CurrentBalance)
+            throw new InvalidOperationException("Payment exceeds balance");
+        CurrentBalance -= amount;
+        // UpdateStatus() called internally
     }
 }
 ```

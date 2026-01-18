@@ -1,7 +1,6 @@
 using Fundo.Application.DTO;
 using Fundo.Application.Interfaces;
 using Fundo.Application.Utils;
-using Fundo.Domain.Constants;
 using Fundo.Domain.Entities;
 using Fundo.Domain.Interfaces;
 using Microsoft.Extensions.Logging;
@@ -24,23 +23,8 @@ public class LoanService : ILoanService
         _logger.LogInformation("Creating new loan for applicant {ApplicantName} with amount {Amount:C}", 
             request.ApplicantName, request.Amount);
 
-        var loan = new Loan
-        {
-            Amount = request.Amount,
-            CurrentBalance = request.Amount, // New loan starts with full balance
-            ApplicantName = request.ApplicantName,
-            Status = LoanStatus.Active,
-            CreatedAt = DateTimeOffset.UtcNow,
-            UpdatedAt = DateTimeOffset.UtcNow
-        };
-
-        // Validate business rules using domain logic
-        if (!loan.IsValid())
-        {
-            _logger.LogWarning("Loan validation failed for applicant {ApplicantName}: Current balance exceeds loan amount", 
-                request.ApplicantName);
-            throw new InvalidOperationException("Invalid loan data: Current balance exceeds loan amount");
-        }
+        // Use domain factory method - validation and business rules handled by domain
+        var loan = Loan.Create(request.Amount, request.ApplicantName);
 
         var createdLoan = await _loanRepository.AddAsync(loan);
         _logger.LogInformation("Loan created successfully with ID {LoanId} for applicant {ApplicantName}", 
@@ -88,37 +72,11 @@ public class LoanService : ILoanService
             throw new KeyNotFoundException($"Loan with ID {id} not found");
         }
 
-        // Validate payment amount
-        if (request.Amount <= 0)
-        {
-            _logger.LogWarning("Payment validation failed for loan {LoanId}: Invalid amount {Amount}", 
-                id, request.Amount);
-            throw new ArgumentException("Payment amount must be greater than zero", nameof(request.Amount));
-        }
-
-        if (request.Amount > loan.CurrentBalance)
-        {
-            _logger.LogWarning("Payment validation failed for loan {LoanId}: Payment {PaymentAmount:C} exceeds balance {Balance:C}",
-                id, request.Amount, loan.CurrentBalance);
-            throw new InvalidOperationException(
-                $"Payment amount ${request.Amount:F2} exceeds current balance ${loan.CurrentBalance:F2}");
-        }
-
         var previousBalance = loan.CurrentBalance;
         var previousStatus = loan.Status;
 
-        // Apply payment
-        loan.CurrentBalance -= request.Amount;
-        
-        // Use domain logic to update status and timestamp
-        loan.UpdateStatus();
-
-        // Validate business rules after payment
-        if (!loan.IsValid())
-        {
-            _logger.LogError("Payment resulted in invalid loan state for loan {LoanId}", id);
-            throw new InvalidOperationException("Payment resulted in invalid loan state");
-        }
+        // Use domain method - validation and business rules handled by domain
+        loan.ApplyPayment(request.Amount);
 
         await _loanRepository.UpdateAsync(loan);
         

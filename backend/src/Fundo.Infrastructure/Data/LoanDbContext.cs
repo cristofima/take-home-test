@@ -66,56 +66,51 @@ public class LoanDbContext : DbContext
         var baseDate = new DateTime(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
         modelBuilder.Entity<Loan>().HasData(
-            new Loan
-            {
-                Id = Guid.Parse("11111111-1111-1111-1111-111111111111"),
-                Amount = 25000.00m,
-                CurrentBalance = 18750.00m,
-                ApplicantName = "John Doe",
-                Status = LoanStatus.Active,
-                CreatedAt = new DateTime(2025, 7, 1, 0, 0, 0, DateTimeKind.Utc),
-                UpdatedAt = new DateTime(2025, 12, 1, 0, 0, 0, DateTimeKind.Utc)
-            },
-            new Loan
-            {
-                Id = Guid.Parse("22222222-2222-2222-2222-222222222222"),
-                Amount = 15000.00m,
-                CurrentBalance = 0.00m,
-                ApplicantName = "Jane Smith",
-                Status = LoanStatus.Paid,
-                CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc),
-                UpdatedAt = new DateTime(2025, 11, 1, 0, 0, 0, DateTimeKind.Utc)
-            },
-            new Loan
-            {
-                Id = Guid.Parse("33333333-3333-3333-3333-333333333333"),
-                Amount = 50000.00m,
-                CurrentBalance = 32500.00m,
-                ApplicantName = "Robert Johnson",
-                Status = LoanStatus.Active,
-                CreatedAt = new DateTime(2025, 5, 1, 0, 0, 0, DateTimeKind.Utc),
-                UpdatedAt = new DateTime(2025, 12, 17, 0, 0, 0, DateTimeKind.Utc)
-            },
-            new Loan
-            {
-                Id = Guid.Parse("44444444-4444-4444-4444-444444444444"),
-                Amount = 10000.00m,
-                CurrentBalance = 0.00m,
-                ApplicantName = "Emily Williams",
-                Status = LoanStatus.Paid,
-                CreatedAt = new DateTime(2024, 7, 1, 0, 0, 0, DateTimeKind.Utc),
-                UpdatedAt = new DateTime(2025, 9, 1, 0, 0, 0, DateTimeKind.Utc)
-            },
-            new Loan
-            {
-                Id = Guid.Parse("55555555-5555-5555-5555-555555555555"),
-                Amount = 75000.00m,
-                CurrentBalance = 72000.00m,
-                ApplicantName = "Michael Brown",
-                Status = LoanStatus.Active,
-                CreatedAt = new DateTime(2025, 10, 1, 0, 0, 0, DateTimeKind.Utc),
-                UpdatedAt = new DateTime(2026, 1, 2, 0, 0, 0, DateTimeKind.Utc)
-            }
+            new Loan(
+                id: Guid.Parse("11111111-1111-1111-1111-111111111111"),
+                amount: 25000.00m,
+                currentBalance: 18750.00m,
+                applicantName: "John Doe",
+                status: LoanStatus.Active,
+                createdAt: new DateTime(2025, 7, 1, 0, 0, 0, DateTimeKind.Utc),
+                updatedAt: new DateTime(2025, 12, 1, 0, 0, 0, DateTimeKind.Utc)
+            ),
+            new Loan(
+                id: Guid.Parse("22222222-2222-2222-2222-222222222222"),
+                amount: 15000.00m,
+                currentBalance: 0.00m,
+                applicantName: "Jane Smith",
+                status: LoanStatus.Paid,
+                createdAt: new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc),
+                updatedAt: new DateTime(2025, 11, 1, 0, 0, 0, DateTimeKind.Utc)
+            ),
+            new Loan(
+                id: Guid.Parse("33333333-3333-3333-3333-333333333333"),
+                amount: 50000.00m,
+                currentBalance: 32500.00m,
+                applicantName: "Robert Johnson",
+                status: LoanStatus.Active,
+                createdAt: new DateTime(2025, 5, 1, 0, 0, 0, DateTimeKind.Utc),
+                updatedAt: new DateTime(2025, 12, 17, 0, 0, 0, DateTimeKind.Utc)
+            ),
+            new Loan(
+                id: Guid.Parse("44444444-4444-4444-4444-444444444444"),
+                amount: 10000.00m,
+                currentBalance: 0.00m,
+                applicantName: "Emily Williams",
+                status: LoanStatus.Paid,
+                createdAt: new DateTime(2024, 7, 1, 0, 0, 0, DateTimeKind.Utc),
+                updatedAt: new DateTime(2025, 9, 1, 0, 0, 0, DateTimeKind.Utc)
+            ),
+            new Loan(
+                id: Guid.Parse("55555555-5555-5555-5555-555555555555"),
+                amount: 75000.00m,
+                currentBalance: 72000.00m,
+                applicantName: "Michael Brown",
+                status: LoanStatus.Active,
+                createdAt: new DateTime(2025, 10, 1, 0, 0, 0, DateTimeKind.Utc),
+                updatedAt: new DateTime(2026, 1, 2, 0, 0, 0, DateTimeKind.Utc)
+            )
         );
     }
 }

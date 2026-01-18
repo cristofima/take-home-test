@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <InternalsVisibleTo Include="Fundo.Infrastructure" />
+    <InternalsVisibleTo Include="Fundo.Services.Tests" />
+  </ItemGroup>
+
 </Project>
